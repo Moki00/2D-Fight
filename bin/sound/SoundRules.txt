@@ -1,0 +1,3 @@
+must be WAV files for 16 bit
+
+can make in BeepBox
