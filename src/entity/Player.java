@@ -37,28 +37,16 @@ public class Player extends Entity {
 		solidArea = new Rectangle();
 
 		// upper left corner of collision
-		solidArea.x = 1; // 48/3=16 from the left (mid 1/3rd to collide, 1/3 free on both sides)
-		solidArea.y = 1; // 48/2=24 from the top (bottom half will collide)
+		solidArea.x = gp.tileSize / 3; // 48/3=16 from the left (mid 1/3rd to collide, 1/3 free on both sides)
+		solidArea.y = gp.tileSize / 2; // 48/2=24 from the top (bottom half will collide)
 
 		// objects
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 
 		// size of collision
-		solidArea.width = gp.tileSize - 2; // 48-2=46 wide
-		solidArea.height = gp.tileSize - 2; // 48-2=46 high
-
-//		// upper left corner of collision
-//		solidArea.x = gp.tileSize / 3; // 48/3=16 from the left (mid 1/3rd to collide, 1/3 free on both sides)
-//		solidArea.y = gp.tileSize / 2; // 48/2=24 from the top (bottom half will collide)
-//
-//		// objects
-//		solidAreaDefaultX = solidArea.x;
-//		solidAreaDefaultY = solidArea.y;
-//
-//		// size of collision
-//		solidArea.width = gp.tileSize - solidArea.x * 2; // 48-32=16 wide
-//		solidArea.height = gp.tileSize - solidArea.y; // 48-24=24 high
+		solidArea.width = gp.tileSize - solidArea.x * 2; // 48-32=16 wide
+		solidArea.height = gp.tileSize - solidArea.y; // 48-24=24 high
 
 		setDefaultValues();
 		getPlayerImage();
@@ -126,47 +114,40 @@ public class Player extends Entity {
 			int objIndex = gp.collisionChecker.checkObject(this, true);
 			pickUpObject(objIndex);
 
-		} else {
-			standCounter++;
-			if (standCounter > 100) {
-				spriteNum = 1; // returns to 1
-				standCounter = 0;
-			}
-		} // end: if moving?
+			// if collision is false, player can move
+			if (collisionOn == false) {
 
-		// if collision is false, player can move
-		if (collisionOn == false) {
+				switch (direction) {
+				case "up":
+					worldY -= speed;
+					break;
+				case "down":
+					worldY += speed;
+					break;
+				case "left":
+					worldX -= speed;
+					break;
+				case "right":
+					worldX += speed;
+					break;
 
-			switch (direction) {
-			case "up":
-				worldY -= speed;
-				break;
-			case "down":
-				worldY += speed;
-				break;
-			case "left":
-				worldX -= speed;
-				break;
-			case "right":
-				worldX += speed;
-				break;
+				default:
+					System.out.println("never reach this: Player.update");
+					break;
+				}
 
-			default:
-				System.out.println("error in collision");
-				break;
 			}
 
-		}
-
-		// player has 2 movements only
-		spriteCounter++;
-		if (spriteCounter > 13) {
-			if (spriteNum == 1) {
-				spriteNum++;
-			} else if (spriteNum == 2) {
-				spriteNum--;
+			// player has 2 movements only
+			spriteCounter++;
+			if (spriteCounter > 13) {
+				if (spriteNum == 1) {
+					spriteNum++;
+				} else if (spriteNum == 2) {
+					spriteNum--;
+				}
+				spriteCounter = 0;
 			}
-			spriteCounter = 0;
 		}
 	}
 

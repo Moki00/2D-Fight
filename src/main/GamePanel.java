@@ -73,7 +73,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void setupGame() {
 		assetSetter.setObject();
 		playMusic(0); // main song
-		stopMusic();
+		stopMusic(); ///// temp stopping music -remove later-
 		gameState = playState;
 	}
 
@@ -177,7 +177,6 @@ public class GamePanel extends JPanel implements Runnable {
 		music.setFile(i);
 		music.play();
 		music.loop();
-
 	}
 
 	public void stopMusic() {

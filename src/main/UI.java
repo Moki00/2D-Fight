@@ -50,7 +50,7 @@ public class UI {
 		} else if (gp.gameState == gp.pauseState) {
 			drawPauseScreen();
 		} else {
-			System.err.print("error at UI draw gameState: " + gp.gameState);
+			System.err.print("No gameState in UI draw(): " + gp.gameState);
 		}
 	}
 
