@@ -4,11 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
-
 import main.GamePanel;
 import main.KeyHandler;
-import main.Util;
 
 public class Player extends Entity {
 
@@ -25,9 +22,8 @@ public class Player extends Entity {
 	 */
 	public Player(GamePanel gp, KeyHandler keyH) {
 
-		super(gp);
+		super(gp); // calling superClass
 
-		this.gp = gp;
 		this.keyH = keyH;
 
 		screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
@@ -62,30 +58,15 @@ public class Player extends Entity {
 
 	public void getPlayerImage() {
 
-		right1 = setup("heroR1");
-		right2 = setup("heroR2");
-		left1 = setup("heroLeft1");
-		left2 = setup("heroLeft2");
-		up1 = setup("heroUp1");
-		up2 = setup("heroUp2");
-		down1 = setup("heroDown1");
-		down2 = setup("heroDown2");
+		right1 = setup("/player/heroR1");
+		right2 = setup("/player/heroR2");
+		left1 = setup("/player/heroLeft1");
+		left2 = setup("/player/heroLeft2");
+		up1 = setup("/player/heroUp1");
+		up2 = setup("/player/heroUp2");
+		down1 = setup("/player/heroDown1");
+		down2 = setup("/player/heroDown2");
 
-	}
-
-	public BufferedImage setup(String imageName) {
-		Util util = new Util();
-		BufferedImage image = null;
-
-		try {
-
-			image = ImageIO.read(getClass().getResourceAsStream("/player/" + imageName + ".png"));
-			image = util.scaleImage(image, gp.tileSize, gp.tileSize);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return image;
 	}
 
 	/**
