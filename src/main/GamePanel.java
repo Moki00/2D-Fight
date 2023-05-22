@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// System
 	TileManager tileM = new TileManager(this);
-	KeyHandler keyH = new KeyHandler(this);
+	public KeyHandler keyH = new KeyHandler(this);
 
 	public Sound music = new Sound();
 	public Sound soundEffect = new Sound();
@@ -61,8 +61,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// Game State
 	public int gameState;
+	public final int titleState = 0;
 	public final int playState = 1;
 	public final int pauseState = 2;
+	public final int dialogueState = 3;
 
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -77,7 +79,9 @@ public class GamePanel extends JPanel implements Runnable {
 		assetSetter.setNpc();
 		playMusic(0); // main song
 		stopMusic(); ///// temp stopping music -remove later-
-		gameState = playState;
+
+		// Start at Title Screen
+		gameState = titleState;
 	}
 
 	public void startGameThread() {
@@ -110,7 +114,7 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 
 			if (timer >= 1_000_000_000) {
-				System.out.println("FPS: " + drawCount);
+//				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
 				timer = 0;
 			}
@@ -118,13 +122,19 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	/**
-	 * updates the game
+	 * updates the game, unless paused
 	 */
 	public void update() {
 
 		if (gameState == playState) {
 			player.update();
+			for (int i = 0; i < npc.length; i++) {
+				if (npc[i] != null) {
+					npc[i].update();
+				}
+			}
 		}
+
 		if (gameState == pauseState) {
 			// do not update the player
 		}
@@ -143,28 +153,39 @@ public class GamePanel extends JPanel implements Runnable {
 			drawStart = System.nanoTime();
 		}
 
-		// Tile background
-		tileM.draw(g2);
-
-		// Object array
-		for (int i = 0; i < obj.length; i++) {
-			if (obj[i] != null) {
-				obj[i].draw(g2, this);
-			}
+		// Title Screen
+		if (gameState == titleState) {
+			ui.draw(g2);
+			//
 		}
 
-		// NPC list
-		for (int i = 0; i < npc.length; i++) {
-			if (npc[i] != null) {
-				npc[i].draw(g2);
+		// non-Title Screen
+		else {
+
+			// Tile background
+			tileM.draw(g2);
+
+			// Object array
+			for (int i = 0; i < obj.length; i++) {
+				if (obj[i] != null) {
+					obj[i].draw(g2, this);
+				}
 			}
-		}
 
-		// player must be after tiles
-		player.draw(g2);
+			// NPC list
+			for (int i = 0; i < npc.length; i++) {
+				if (npc[i] != null) {
+					npc[i].draw(g2);
+				}
+			}
 
-		// UI labels last
-		ui.draw(g2);
+			// player must be after tiles
+			player.draw(g2);
+
+			// UI labels last
+			ui.draw(g2);
+
+		} // close the else for non-title screen
 
 		// Debug end timer
 		if (keyH.checkDrawTime) {
@@ -176,6 +197,7 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 
 		g2.dispose();
+
 	}
 
 	/**

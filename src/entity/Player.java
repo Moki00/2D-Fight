@@ -95,6 +95,10 @@ public class Player extends Entity {
 			int objIndex = gp.collisionChecker.checkObject(this, true);
 			pickUpObject(objIndex);
 
+			// Check NPC Collision
+			int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
+			interactNpc(npcIndex);
+
 			// if collision is false, player can move
 			if (collisionOn == false) {
 
@@ -141,6 +145,20 @@ public class Player extends Entity {
 		if (i != 999) {
 
 		}
+	}
+
+	/**
+	 * @param i
+	 */
+	private void interactNpc(int i) {
+		if (i != 999) {
+			if (gp.keyH.spacePressed) {
+				gp.gameState = gp.dialogueState;
+				gp.npc[i].speak();
+			}
+		}
+		gp.keyH.spacePressed = false;
+
 	}
 
 	/**

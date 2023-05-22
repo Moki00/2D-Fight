@@ -11,7 +11,7 @@ import main.Util;
 
 /**
  * 
- * parent class for players and monsters
+ * parent class for player, NPCs, and monsters
  * 
  * @author Moki_21_10
  *
@@ -22,7 +22,7 @@ public class Entity {
 	public int worldX, worldY;
 	public int speed;
 
-	// store our image files
+	// store image files of entity
 	public BufferedImage right1, left1, up1, down1, right2, left2, up2, down2;
 	public String direction;
 
@@ -33,12 +33,74 @@ public class Entity {
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48); // default for all entities
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
-	public String packageClass = "/player/";
+	public int actionCounter = 0;
+	String dialogues[] = new String[20];
+	int dialogueIndex = 0;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param gp
+	 */
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 	}
 
+	public void setAction() {
+	}
+
+	/**
+	 * update each entity
+	 */
+	public void update() {
+		setAction();
+
+		// Check Tile Collision
+		collisionOn = false;
+		gp.collisionChecker.checkTile(this);
+		gp.collisionChecker.checkObject(this, false);
+		gp.collisionChecker.checkPlayer(this);
+
+		// if collision is false, entity can move
+		if (collisionOn == false) {
+
+			switch (direction) {
+			case "up":
+				worldY -= speed;
+				break;
+			case "down":
+				worldY += speed;
+				break;
+			case "left":
+				worldX -= speed;
+				break;
+			case "right":
+				worldX += speed;
+				break;
+			default:
+				System.out.println("never reach this: Entity.update");
+				break;
+			}
+		}
+
+		// entity has 2 movements per direction
+		spriteCounter++;
+		if (spriteCounter > 13) {
+			if (spriteNum == 1) {
+				spriteNum++;
+			} else if (spriteNum == 2) {
+				spriteNum--;
+			}
+			spriteCounter = 0;
+		}
+
+	}
+
+	/**
+	 * draw entity on screen
+	 * 
+	 * @param g2
+	 */
 	public void draw(Graphics2D g2) {
 
 		int screenX = worldX - gp.player.worldX + gp.player.screenX;
@@ -94,6 +156,12 @@ public class Entity {
 		}
 	}
 
+	/**
+	 * Setup image
+	 * 
+	 * @param imagePath
+	 * @return
+	 */
 	public BufferedImage setup(String imagePath) {
 		Util util = new Util();
 		BufferedImage image = null;
@@ -107,6 +175,35 @@ public class Entity {
 		}
 
 		return image;
+	}
+
+	/**
+	 * talk to NPC
+	 */
+	public void speak() {
+		if (dialogues[dialogueIndex] == null) {
+			dialogueIndex = 0;
+		}
+		gp.ui.currentDialogue = dialogues[dialogueIndex];
+		dialogueIndex++;
+
+		// direct Old Man to player when talking
+		switch (gp.player.direction) {
+
+		case "down":
+			direction = "up";
+			break;
+		case "up":
+			direction = "down";
+			break;
+		case "left":
+			direction = "right";
+			break;
+		case "right":
+			direction = "left";
+			break;
+
+		}
 	}
 
 }
