@@ -37,6 +37,10 @@ public class Entity {
 	String dialogues[] = new String[20];
 	int dialogueIndex = 0;
 
+	// Character Status
+	public int maxLife;
+	public int life;
+
 	/**
 	 * Constructor
 	 * 

@@ -36,7 +36,7 @@ public class Player extends Entity {
 		solidArea.x = gp.tileSize / 3; // 48/3=16 from the left (mid 1/3rd to collide, 1/3 free on both sides)
 		solidArea.y = gp.tileSize / 2; // 48/2=24 from the top (bottom half will collide)
 
-		// objects
+		// for resets
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 
@@ -54,6 +54,12 @@ public class Player extends Entity {
 		speed = 4;
 		direction = "down";
 		spriteNum = 1;
+
+		// Player Status
+		maxLife = 6;
+		life = maxLife;
+//		life = 5;
+
 	}
 
 	public void getPlayerImage() {

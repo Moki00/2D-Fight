@@ -61,7 +61,8 @@ public class KeyHandler implements KeyListener {
 					// New Game
 					if (gp.ui.titleChoice == 1) {
 						gp.ui.titleScreenState = 1; // create character
-//						gp.playMusic(0); // who will you be music
+//						gp.playMusic(0); // mystery music: who will you be?
+						gp.ui.titleChoice = 0; // reset the choice;
 					}
 
 					// Credits
@@ -124,6 +125,7 @@ public class KeyHandler implements KeyListener {
 					// Cancel, Return to title screen
 					if (gp.ui.titleChoice == 3) {
 						gp.ui.titleScreenState = 0;
+						gp.ui.titleChoice = 0; // reset the choice;
 					}
 
 				} // end space or enter selection

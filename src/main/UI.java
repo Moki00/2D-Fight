@@ -5,7 +5,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
+
+import object.Obj_Heart;
+import object.SuperObject;
 
 /**
  * 
@@ -19,12 +23,14 @@ public class UI {
 	GamePanel gp;
 	Graphics2D g2;
 	Font maru, puri;
+	BufferedImage heart_full, heart_half, heart_empty;
 	public boolean messageOn = false;
 	public String message = "";
 	int messageCounter;
 	public boolean gameFinished = false;
 	public String currentDialogue = "";
 	public int titleChoice = 0;
+//	public int roleChoice = 0; // not in keyHandler
 	public int titleScreenState = 0;
 
 //	BufferedImage keyIcon;
@@ -49,6 +55,12 @@ public class UI {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		// Create HUD Object
+		SuperObject heart = new Obj_Heart(gp);
+		heart_full = heart.image;
+		heart_half = heart.image2;
+		heart_empty = heart.image3;
 
 //		Obj_Key key = new Obj_Key(gp);
 //		keyIcon = key.image;
@@ -83,17 +95,51 @@ public class UI {
 
 		// Play State
 		if (gp.gameState == gp.playState) {
-
+			drawPlayerLife();
 		}
 
 		// Pause State
 		if (gp.gameState == gp.pauseState) {
+			drawPlayerLife();
 			drawPauseScreen();
 		}
 
 		// Dialogue State
 		if (gp.gameState == gp.dialogueState) {
+			drawPlayerLife();
 			drawDialogueScreen();
+		}
+	}
+
+	/**
+	 * display life top left
+	 */
+	private void drawPlayerLife() {
+		int x, y, i;
+		x = gp.tileSize / 2;
+		y = gp.tileSize / 2;
+		i = 0;
+
+		// Draw MaxLife with empty hearts
+		while (i < gp.player.maxLife / 2) {
+			g2.drawImage(heart_empty, x, y, null);
+			i++;
+			x += gp.tileSize;
+		}
+
+		// Reset values
+		x = gp.tileSize / 2;
+		i = 0;
+
+		// Draw Current life on top of maxLife
+		while (i < gp.player.life) {
+			g2.drawImage(heart_half, x, y, null);
+			i++;
+			if (i < gp.player.life) {
+				g2.drawImage(heart_full, x, y, null);
+				i++;
+				x += gp.tileSize;
+			}
 		}
 	}
 
@@ -169,6 +215,7 @@ public class UI {
 
 		// create character with "New Game"
 		else if (titleScreenState == 1) {
+
 			g2.setColor(Color.white);
 			g2.setFont(g2.getFont().deriveFont(42F));
 
@@ -185,14 +232,14 @@ public class UI {
 				g2.drawString("→", x - gp.tileSize, y);
 			}
 
-			text = "Ranger";
+			text = "Ranger (under develop)";
 			y += gp.tileSize;
 			g2.drawString(text, x, y);
 			if (titleChoice == 1) {
 				g2.drawString("→", x - gp.tileSize, y);
 			}
 
-			text = "Mage";
+			text = "Mage (under develop)";
 			y += gp.tileSize;
 			g2.drawString(text, x, y);
 			if (titleChoice == 2) {
