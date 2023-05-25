@@ -26,17 +26,20 @@ public class GamePanel extends JPanel implements Runnable {
 	 */
 	private static final long serialVersionUID = -4611689532662755630L;
 
-	// Screen Settings
+	/**
+	 * Screen Settings
+	 */
 	final int originalTileSize = 16;
 	final int scale = 3; // scale for large monitor
 	public final int tileSize = originalTileSize * scale; // 48x48 tiles
-
 	public final int maxScreenCol = 16;
 	public final int maxScreenRow = 12;
 	public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
 	public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
-	// World Settings
+	/**
+	 * World Settings (whole map)
+	 */
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
 
@@ -52,20 +55,28 @@ public class GamePanel extends JPanel implements Runnable {
 	public CollisionChecker collisionChecker = new CollisionChecker(this);
 	public AssetSetter assetSetter = new AssetSetter(this);
 	public UI ui = new UI(this);
+	public EventHandler eventHandler = new EventHandler(this);
 	Thread gameThread;
 
-	// Entity and Objects
+	/**
+	 * Entities and Objects
+	 */
 	public Player player = new Player(this, keyH);
 	public SuperObject obj[] = new SuperObject[10];
 	public Entity npc[] = new Entity[10];
 
-	// Game State
+	/**
+	 * Game States
+	 */
 	public int gameState;
 	public final int titleState = 0;
 	public final int playState = 1;
 	public final int pauseState = 2;
 	public final int dialogueState = 3;
 
+	/**
+	 * Game Panel Constructor ("gp" in other classes)
+	 */
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.black);

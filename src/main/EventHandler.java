@@ -24,7 +24,7 @@ public class EventHandler {
 		this.gp = gp;
 
 		eventRect = new Rectangle();
-		eventRect.x = 23;
+		eventRect.x = 23; // center of the tile
 		eventRect.y = 23;
 		eventRect.width = 2; // 2 pixels wide
 		eventRect.height = 2;
@@ -36,7 +36,26 @@ public class EventHandler {
 	}
 
 	public void checkEvent() {
+		if (hit(27, 16, "right") == true) {
+			damagePit(gp.dialogueState);
+		}
+		if (hit(23, 12, "up") == true) {
+			healingPool(gp.dialogueState);
+		}
+	}
 
+	private void damagePit(int gameState) {
+		gp.gameState = gameState;
+		gp.ui.currentDialogue = "You fell into a pit";
+		gp.player.life--; // lose half a heart
+	}
+
+	private void healingPool(int gameState) {
+		if (gp.keyH.spacePressed) {
+			gp.gameState = gameState;
+			gp.ui.currentDialogue = "You gain life";
+			gp.player.life++; // gain half a heart
+		}
 	}
 
 	/**

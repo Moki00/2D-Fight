@@ -158,8 +158,8 @@ public class KeyHandler implements KeyListener {
 				gp.gameState = gp.pauseState;
 			}
 			// Action
-			System.out.println(spacePressed);
 			if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_ENTER) {
+			// System.out.println(spacePressed);
 				spacePressed = true;
 			}
 

@@ -25,7 +25,7 @@ public class TileManager {
 		getTileImage();
 //		loadMap("/maps/mapOfField.txt");
 //		loadMap("/maps/mapWorldSimple.txt");
-		loadMap("/maps/worldV2.txt");
+		loadMap("/maps/worldV3.txt");
 	}
 
 	/**

@@ -105,6 +105,11 @@ public class Player extends Entity {
 			int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
 			interactNpc(npcIndex);
 
+			// Check Event
+			gp.eventHandler.checkEvent();
+
+			gp.keyH.spacePressed = false; // fix bug in part 23
+
 			// if collision is false, player can move
 			if (collisionOn == false) {
 
@@ -163,8 +168,6 @@ public class Player extends Entity {
 				gp.npc[i].speak();
 			}
 		}
-		gp.keyH.spacePressed = false;
-
 	}
 
 	/**

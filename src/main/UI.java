@@ -115,6 +115,7 @@ public class UI {
 	 * display life top left
 	 */
 	private void drawPlayerLife() {
+//		gp.player.life = 3;
 		int x, y, i;
 		x = gp.tileSize / 2;
 		y = gp.tileSize / 2;
