@@ -42,6 +42,16 @@ public class EventHandler {
 		if (hit(23, 12, "up") == true) {
 			healingPool(gp.dialogueState);
 		}
+		if (hit(27, 27, "right") == true) {
+			teleport(gp.dialogueState);
+		}
+	}
+
+	private void teleport(int gameState) {
+		gp.gameState = gameState;
+		gp.ui.currentDialogue = "You teleported";
+		gp.player.worldX = gp.tileSize * 23;
+		gp.player.worldY = gp.tileSize * 22;
 	}
 
 	private void damagePit(int gameState) {
@@ -54,7 +64,7 @@ public class EventHandler {
 		if (gp.keyH.spacePressed) {
 			gp.gameState = gameState;
 			gp.ui.currentDialogue = "You gain life";
-			gp.player.life++; // gain half a heart
+			gp.player.life = gp.player.maxLife; // gain half a heart
 		}
 	}
 

@@ -159,7 +159,7 @@ public class KeyHandler implements KeyListener {
 			}
 			// Action
 			if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_ENTER) {
-			// System.out.println(spacePressed);
+				// System.out.println(spacePressed);
 				spacePressed = true;
 			}
 
