@@ -1,9 +1,6 @@
 package object;
 
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
+import entity.Entity;
 import main.GamePanel;
 
 /**
@@ -12,25 +9,16 @@ import main.GamePanel;
  * @author Moki_21_10
  *
  */
-public class Obj_Key extends SuperObject {
-
-	GamePanel gp;
+public class Obj_Key extends Entity {
 
 	public Obj_Key(GamePanel gp) {
 
-		this.gp = gp;
+		super(gp); // Entity
 
 		name = "Key";
+		down1 = setup("/objects/key");
 
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/objects/key.png"));
-			util.scaleImage(image, gp.tileSize, gp.tileSize);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		// unique solid area for each item
+		// unique solid area for an item
 //		solidArea.x = 5;
 
 	}

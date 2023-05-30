@@ -63,7 +63,6 @@ public class NPC_OldMan extends Entity {
 			} else {
 				direction = "left";
 			}
-//			System.out.println(num + ": old man goes: " + direction);
 
 			actionCounter = 0;
 		}

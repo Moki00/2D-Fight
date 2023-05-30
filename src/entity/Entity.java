@@ -24,7 +24,7 @@ public class Entity {
 
 	// store image files of entity
 	public BufferedImage right1, left1, up1, down1, right2, left2, up2, down2;
-	public String direction;
+	public String direction = "down";
 
 	public int spriteNum = 1;
 	public int spriteCounter = 0;
@@ -36,6 +36,11 @@ public class Entity {
 	public int actionCounter = 0;
 	String dialogues[] = new String[20];
 	int dialogueIndex = 0;
+
+	// from SuperObject
+	public BufferedImage image, image2, image3;
+	public String name;
+	public boolean collision = false;
 
 	// Character Status
 	public int maxLife;
@@ -64,6 +69,8 @@ public class Entity {
 		gp.collisionChecker.checkTile(this);
 		gp.collisionChecker.checkObject(this, false);
 		gp.collisionChecker.checkPlayer(this);
+		gp.collisionChecker.checkEntity(this, gp.monster);
+		gp.collisionChecker.checkEntity(this, gp.npc);
 
 		// if collision is false, entity can move
 		if (collisionOn == false) {
@@ -172,7 +179,7 @@ public class Entity {
 
 		try {
 
-			image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
+			image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png")); // must use png file with this
 			image = util.scaleImage(image, gp.tileSize, gp.tileSize);
 		} catch (Exception e) {
 			e.printStackTrace();

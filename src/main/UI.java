@@ -8,8 +8,8 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
+import entity.Entity;
 import object.Obj_Heart;
-import object.SuperObject;
 
 /**
  * 
@@ -57,13 +57,11 @@ public class UI {
 		}
 
 		// Create HUD Object
-		SuperObject heart = new Obj_Heart(gp);
+		Entity heart = new Obj_Heart(gp);
 		heart_full = heart.image;
 		heart_half = heart.image2;
 		heart_empty = heart.image3;
 
-//		Obj_Key key = new Obj_Key(gp);
-//		keyIcon = key.image;
 	}
 
 	/**
