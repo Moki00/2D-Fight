@@ -45,6 +45,9 @@ public class Entity {
 	// Character Status
 	public int maxLife;
 	public int life;
+	public boolean invincible = false;
+	public int invincibleCounter = 0;
+	public String type = "";
 
 	/**
 	 * Constructor
@@ -68,9 +71,17 @@ public class Entity {
 		collisionOn = false;
 		gp.collisionChecker.checkTile(this);
 		gp.collisionChecker.checkObject(this, false);
-		gp.collisionChecker.checkPlayer(this);
 		gp.collisionChecker.checkEntity(this, gp.monster);
 		gp.collisionChecker.checkEntity(this, gp.npc);
+
+		boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
+
+		if (this.type.equals("monster") && contactPlayer) {
+			if (gp.player.invincible == false) {
+				gp.player.life--;
+				gp.player.invincible = true;
+			}
+		}
 
 		// if collision is false, entity can move
 		if (collisionOn == false) {

@@ -9,6 +9,8 @@ public class Mon_GreenSlime extends Entity {
 
 	public Mon_GreenSlime(GamePanel gp) {
 		super(gp);
+
+		type = "monster";
 		name = "GreenSlime";
 		speed = 1;
 		maxLife = 4;

@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -80,8 +81,18 @@ public class Player extends Entity {
 	 */
 	public void update() {
 
-		if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true
-				|| keyH.rightPressed == true) {
+		// even without pressing keys
+		if (invincible) {
+			invincibleCounter++;
+			if (invincibleCounter > 60) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+		}
+
+		// When pressing keys
+		if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true
+				|| keyH.spacePressed) {
 
 			if (keyH.upPressed == true) {
 				direction = "up";
@@ -107,16 +118,14 @@ public class Player extends Entity {
 
 			// Check Monster Collision
 			int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
+			touchMonster(monsterIndex);
 //			interactMonster(monsterIndex);
 
 			// Check Event
 			gp.eventHandler.checkEvent();
 
-			gp.keyH.spacePressed = false; // fix bug in part 23
-
 			// if collision is false, player can move
-			if (collisionOn == false) {
-
+			if (collisionOn == false && keyH.spacePressed == false) {
 				switch (direction) {
 				case "up":
 					worldY -= speed;
@@ -130,13 +139,10 @@ public class Player extends Entity {
 				case "right":
 					worldX += speed;
 					break;
-
-				default:
-					System.out.println("never reach this: Player.update");
-					break;
 				}
-
 			}
+
+			gp.keyH.spacePressed = false; // moved
 
 			// player has 2 movements only
 			spriteCounter++;
@@ -170,6 +176,20 @@ public class Player extends Entity {
 			if (gp.keyH.spacePressed) {
 				gp.gameState = gp.dialogueState;
 				gp.npc[i].speak();
+			}
+		}
+	}
+
+	/**
+	 * touch a monster = ouch
+	 * 
+	 * @param i
+	 */
+	private void touchMonster(int i) {
+		if (i != 999) {
+			if (invincible == false) {
+				life--;
+				invincible = true;
 			}
 		}
 	}
@@ -224,13 +244,26 @@ public class Player extends Entity {
 			break;
 		}
 
+		// visual invincible with player at 30% opacity
+		if (invincible) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		}
+
 		// only drawing at location, no need for scaling here now
 		g2.drawImage(image, screenX, screenY, null);
+
+		// puts everything else back to normal to only show the player opacity change
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
 		// troubleshoot collision rectangles
 //		int x, int y, int width, int height
 //		g2.setColor(Color.RED);
 //		g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+
+		// troubleshoot invincible
+//		g2.setFont(new Font("Ariel", Font.PLAIN, 26));
+//		g2.setColor(Color.white);
+//		g2.drawString(invincible + ": Invincible: " + invincibleCounter, 10, 400);
 
 	}
 
