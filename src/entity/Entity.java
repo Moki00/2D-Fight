@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -19,34 +20,45 @@ import main.Util;
 public class Entity {
 
 	GamePanel gp;
-	public int worldX, worldY;
-	public int speed;
 
-	// store image files of entity
+	// State
+	public int worldX, worldY;
+	public int spriteNum = 1;
+
+	// Image of entity
+	public BufferedImage image, image2, image3;
 	public BufferedImage right1, left1, up1, down1, right2, left2, up2, down2;
+	public BufferedImage attackRight1, attackLeft1, attackUp1, attackDown1, attackRight2, attackLeft2, attackUp2,
+			attackDown2;
 	public String direction = "down";
 
-	public int spriteNum = 1;
-	public int spriteCounter = 0;
-
-	// for collision
+	// Collision
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48); // default for all entities
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
-	public int actionCounter = 0;
+	public boolean collision = false;
+
+	// NPC Conversation
 	String dialogues[] = new String[20];
 	int dialogueIndex = 0;
 
-	// from SuperObject
-	public BufferedImage image, image2, image3;
-	public String name;
-	public boolean collision = false;
+	// Fighting
+	boolean attacking = false;
+	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
+	public boolean alive = true;
+	public boolean dying = false;
+
+	// Counters
+	public int spriteCounter = 0;
+	public int actionCounter = 0;
+	public int invincibleCounter = 0;
 
 	// Character Status
+	public String name;
 	public int maxLife;
 	public int life;
 	public boolean invincible = false;
-	public int invincibleCounter = 0;
+	public int speed;
 	public String type = "";
 
 	/**
@@ -80,6 +92,15 @@ public class Entity {
 			if (gp.player.invincible == false) {
 				gp.player.life--;
 				gp.player.invincible = true;
+			}
+		}
+
+		// invincible: code outside movement
+		if (invincible) {
+			invincibleCounter++;
+			if (invincibleCounter > 30) {
+				invincible = false;
+				invincibleCounter = 0;
 			}
 		}
 
@@ -173,7 +194,16 @@ public class Entity {
 				break;
 			}
 
+			// visual invincible with player at 30% opacity
+			if (invincible) {
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+			}
+
+			// only drawing at location, no need for scaling here now
 			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+			// puts everything else back to normal to only show the player opacity change
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
 		}
 	}
@@ -182,16 +212,18 @@ public class Entity {
 	 * Setup image
 	 * 
 	 * @param imagePath
+	 * @param width
+	 * @param height
 	 * @return
 	 */
-	public BufferedImage setup(String imagePath) {
+	public BufferedImage setup(String imagePath, int width, int height) {
 		Util util = new Util();
 		BufferedImage image = null;
 
 		try {
 
 			image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png")); // must use png file with this
-			image = util.scaleImage(image, gp.tileSize, gp.tileSize);
+			image = util.scaleImage(image, width, height);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -24,14 +24,14 @@ public class NPC_OldMan extends Entity {
 
 	public void getOldManImage() {
 
-		right1 = setup("/npc/oldman_r1");
-		right2 = setup("/npc/oldman_r2");
-		left1 = setup("/npc/oldman_left_1");
-		left2 = setup("/npc/oldman_left_2");
-		up1 = setup("/npc/oldman_up_1");
-		up2 = setup("/npc/oldman_up_2");
-		down1 = setup("/npc/oldman_d1");
-		down2 = setup("/npc/oldman_d2");
+		right1 = setup("/npc/oldman_r1", gp.tileSize, gp.tileSize);
+		right2 = setup("/npc/oldman_r2", gp.tileSize, gp.tileSize);
+		left1 = setup("/npc/oldman_left_1", gp.tileSize, gp.tileSize);
+		left2 = setup("/npc/oldman_left_2", gp.tileSize, gp.tileSize);
+		up1 = setup("/npc/oldman_up_1", gp.tileSize, gp.tileSize);
+		up2 = setup("/npc/oldman_up_2", gp.tileSize, gp.tileSize);
+		down1 = setup("/npc/oldman_d1", gp.tileSize, gp.tileSize);
+		down2 = setup("/npc/oldman_d2", gp.tileSize, gp.tileSize);
 	}
 
 	/**

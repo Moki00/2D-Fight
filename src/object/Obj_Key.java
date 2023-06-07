@@ -16,7 +16,7 @@ public class Obj_Key extends Entity {
 		super(gp); // Entity
 
 		name = "Key";
-		down1 = setup("/objects/key");
+		down1 = setup("/objects/key", gp.tileSize, gp.tileSize);
 
 		// unique solid area for an item
 //		solidArea.x = 5;
