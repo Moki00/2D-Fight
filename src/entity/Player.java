@@ -206,6 +206,7 @@ public class Player extends Entity {
 				gp.gameState = gp.dialogueState;
 				gp.npc[i].speak();
 			} else {
+				gp.playSoundEffect(7); // Swing Sword
 				attacking = true;
 			}
 		}
@@ -268,15 +269,17 @@ public class Player extends Entity {
 	public void damageMonster(int i) {
 		if (i != 999) {
 			if (gp.monster[i].invincible == false) {
+				gp.playSoundEffect(5); // hit monster
 				gp.monster[i].life--;
 				gp.monster[i].invincible = true;
 
 				if (gp.monster[i].life <= 0) {
-					gp.monster[i] = null; // death by null
+//					gp.monster[i] = null; // death by null
+					gp.monster[i].dying = true; // death is real
 				}
 			}
 		} else {
-			System.out.println("miss");
+			// not hurting the monster
 		}
 	}
 
@@ -288,6 +291,8 @@ public class Player extends Entity {
 	public void touchMonster(int i) {
 		if (i != 999) {
 			if (invincible == false) {
+				gp.playSoundEffect(6);
+				System.out.println("hit by monster");
 				life--;
 				invincible = true;
 			}

@@ -52,6 +52,7 @@ public class Entity {
 	public int spriteCounter = 0;
 	public int actionCounter = 0;
 	public int invincibleCounter = 0;
+	public int dyingCounter = 0;
 
 	// Character Status
 	public String name;
@@ -90,6 +91,8 @@ public class Entity {
 
 		if (this.type.equals("monster") && contactPlayer) {
 			if (gp.player.invincible == false) {
+//				gp.playSoundEffect(6);
+				System.out.println("hit by monster??");
 				gp.player.life--;
 				gp.player.invincible = true;
 			}
@@ -196,16 +199,63 @@ public class Entity {
 
 			// visual invincible with player at 30% opacity
 			if (invincible) {
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+				makeTransparent(g2, 0.5f);
+//				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+			}
+
+			// visual death of monsters
+			if (dying) {
+				dyingAnimation(g2);
 			}
 
 			// only drawing at location, no need for scaling here now
 			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
 			// puts everything else back to normal to only show the player opacity change
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+			makeTransparent(g2, 1f);
+//			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
 		}
+	}
+
+	private void dyingAnimation(Graphics2D g2) {
+
+		dyingCounter++;
+		int i = 5;
+
+		if (dyingCounter <= i) {
+			makeTransparent(g2, 0f);
+		}
+		if (dyingCounter > i && dyingCounter <= i * 2) {
+			makeTransparent(g2, 1f);
+		}
+		if (dyingCounter > i * 2 && dyingCounter <= i * 3) {
+			makeTransparent(g2, 0f);
+		}
+		if (dyingCounter > i * 3 && dyingCounter <= i * 4) {
+			makeTransparent(g2, 0.9f);
+		}
+		if (dyingCounter > i * 4 && dyingCounter <= i * 5) {
+			makeTransparent(g2, 0f);
+		}
+		if (dyingCounter > i * 5 && dyingCounter <= i * 6) {
+			makeTransparent(g2, 0.8f);
+		}
+		if (dyingCounter > i * 6 && dyingCounter <= i * 7) {
+			makeTransparent(g2, 0f);
+		}
+		if (dyingCounter > i * 7 && dyingCounter <= i * 8) {
+			makeTransparent(g2, 0.7f);
+		}
+		if (dyingCounter > i * 8) {
+			dying = false;
+			alive = false;
+		}
+
+	}
+
+	private void makeTransparent(Graphics2D g2, float f) {
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, f));
 	}
 
 	/**

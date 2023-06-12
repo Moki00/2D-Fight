@@ -17,9 +17,9 @@ public class Sound {
 		soundUrl[2] = getClass().getResource("/sound/powerUp.wav");
 		soundUrl[3] = getClass().getResource("/sound/unlock.wav");
 		soundUrl[4] = getClass().getResource("/sound/fanfare.wav");
-//		soundUrl[5] = getClass().getResource("/sound/.wav");
-//		soundUrl[6] = getClass().getResource("/sound/.wav");
-//		soundUrl[7] = getClass().getResource("/sound/.wav");
+		soundUrl[5] = getClass().getResource("/sound/hitMonster.wav");
+		soundUrl[6] = getClass().getResource("/sound/receiveDamage.wav");
+		soundUrl[7] = getClass().getResource("/sound/swingSword.wav");
 //		soundUrl[8] = getClass().getResource("/sound/.wav");
 //		soundUrl[9] = getClass().getResource("/sound/.wav");
 //		soundUrl[10] = getClass().getResource("/sound/.wav");
@@ -34,6 +34,8 @@ public class Sound {
 	}
 
 	/**
+	 * Set the sound file to play
+	 * 
 	 * @param i
 	 */
 	public void setFile(int i) {
